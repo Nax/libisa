@@ -22,18 +22,34 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-file(GLOB_RECURSE SOURCES "*.c")
-add_library(libfoo STATIC ${SOURCES})
-set_target_properties(libfoo PROPERTIES OUTPUT_NAME "foo")
-target_compile_definitions(libfoo PUBLIC FOO_STATIC=1)
+# All source files
+file(GLOB_RECURSE SOURCES "*.c" "*.asm")
+
+# All arch-specific files
+file(GLOB_RECURSE SOURCES_ARCH "arch/*")
+
+file(GLOB_RECURSE SOURCES_ARCH_X86 "arch/x86/*")
+file(GLOB_RECURSE SOURCES_ARCH_X86_32 "arch/x86_32/*")
+file(GLOB_RECURSE SOURCES_ARCH_X86_64 "arch/x86_64/*")
+
+list(REMOVE_ITEM SOURCES ${SOURCES_ARCH})
+
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)")
+    list(APPEND SOURCES ${SOURCES_ARCH_X86} ${SOURCES_ARCH_X86_32})
+elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "(amd64)|(AMD64)")
+    list(APPEND SOURCES ${SOURCES_ARCH_X86} ${SOURCES_ARCH_X86_64})
+endif()
+
+add_library(libisa STATIC ${SOURCES})
+set_target_properties(libisa PROPERTIES OUTPUT_NAME "isa")
 target_include_directories(
-    libfoo
+    libisa
     PUBLIC  "${CMAKE_SOURCE_DIR}/include"
     PRIVATE "${CMAKE_SOURCE_DIR}/src"
 )
 
 install(
-    TARGETS libfoo
+    TARGETS libisa
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin

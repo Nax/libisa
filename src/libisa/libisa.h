@@ -24,11 +24,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef FOO_IMPL_H
-#define FOO_IMPL_H 1
+#ifndef LIBISA_INCLUDED_H
+#define LIBISA_INCLUDED_H 1
 
-#include <libfoo/libfoo.h>
+#include <isa/isa.h>
 
-void bar(void);
+#if defined(ISA_ARCH_X86)
+# define FEATURES_SIZE  16
+#else
+# define FEATURES_SIZE  1
+#endif
+
+typedef struct {
+    int         initialized;
+    ISA_Vendor  vendorId;
+    char        vendorName[13];
+    uint8_t     features[FEATURES_SIZE];
+    uint8_t     featuresHw[FEATURES_SIZE];
+} ISA_Context;
+
+extern ISA_Context ISA_Ctx;
+
+void ISA_Detect(void);
+void ISA_SetFeature(ISA_Feature feature);
+void ISA_SetFeatureSw(ISA_Feature feature);
+void ISA_SetFeatureHw(ISA_Feature feature);
 
 #endif

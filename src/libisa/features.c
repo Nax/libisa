@@ -24,27 +24,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef FOO_INCLUDED_H
-#define FOO_INCLUDED_H 1
+#include <libisa/libisa.h>
 
-#if defined(__cplusplus)
-# define FOO_API_EXTERN extern "C"
-#else
-# define FOO_API_EXTERN
-#endif
+static int ISA_CheckFeatureHelper(ISA_Feature feature, const uint8_t* arr)
+{
+    if (feature >= FEATURES_SIZE * 8)
+        return 0;
+    return !!(arr[feature / 8] & (1 << (feature % 8)));
+}
 
-#if (defined(WIN32) || defined(_WIN32)) && !(defined(FOO_STATIC))
-# if defined(FOO_DLL)
-#  define FOO_API_DECL __declspec(dllexport)
-# else
-#  define FOO_API_DECL __declspec(dllimport)
-# endif
-#else
-# define FOO_API_DECL
-#endif
+static void ISA_SetFeatureHelper(ISA_Feature feature, uint8_t* arr)
+{
+    arr[feature / 8] |= (1 << (feature % 8));
+}
 
-#define FOO_API FOO_API_EXTERN FOO_API_DECL
+ISA_API int ISA_CheckFeature(ISA_Feature feature)
+{
+    return ISA_CheckFeatureHelper(feature, ISA_Ctx.features);
+}
 
-FOO_API void foo(void);
+ISA_API int ISA_CheckFeatureHw(ISA_Feature feature)
+{
+    return ISA_CheckFeatureHelper(feature, ISA_Ctx.featuresHw);
+}
 
-#endif
+void ISA_SetFeature(ISA_Feature feature)
+{
+    ISA_SetFeatureHw(feature);
+    ISA_SetFeatureSw(feature);
+}
+
+void ISA_SetFeatureSw(ISA_Feature feature)
+{
+    ISA_SetFeatureHelper(feature, ISA_Ctx.features);
+}
+
+void ISA_SetFeatureHw(ISA_Feature feature)
+{
+    ISA_SetFeatureHelper(feature, ISA_Ctx.featuresHw);
+}
