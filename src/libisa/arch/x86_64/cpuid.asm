@@ -1,9 +1,5 @@
 BITS 64
 
-SECTION .text
-ALIGN 16
-GLOBAL ISA_Cpuid2
-
 %ifidn __OUTPUT_FORMAT__, win64
 %define ARG0   rcx
 %define ARG1   edx
@@ -12,7 +8,12 @@ GLOBAL ISA_Cpuid2
 %define ARG0   rdi
 %define ARG1   esi
 %define ARG2   edx
+%define ISA_Cpuid2 _ISA_Cpuid2
 %endif
+
+SECTION .text
+ALIGN 16
+GLOBAL ISA_Cpuid2
 
 ISA_Cpuid2:
     push rbx

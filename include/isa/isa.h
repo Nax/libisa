@@ -98,7 +98,7 @@ typedef enum {
     ISA_FEATURE_X86_CX16            =  43,
     ISA_FEATURE_X86_XTPR            =  44,
     ISA_FEATURE_X86_PDCM            =  45,
-    ISA_FEATURE_X86_PDID            =  46,
+    ISA_FEATURE_X86_PCID            =  46,
     ISA_FEATURE_X86_DCA             =  47,
     ISA_FEATURE_X86_SSE4_1          =  48,
     ISA_FEATURE_X86_SSE4_2          =  49,

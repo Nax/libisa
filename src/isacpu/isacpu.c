@@ -53,7 +53,7 @@ static const NamedFeature kFeatures[] = {
     { ISA_FEATURE_X86_CX16,              "cx16" },
     { ISA_FEATURE_X86_XTPR,              "xtpr" },
     { ISA_FEATURE_X86_PDCM,              "pdcm" },
-    { ISA_FEATURE_X86_PDID,              "pdid" },
+    { ISA_FEATURE_X86_PCID,              "pcid" },
     { ISA_FEATURE_X86_DCA,               "dca" },
     { ISA_FEATURE_X86_SSE4_1,            "sse4.1" },
     { ISA_FEATURE_X86_SSE4_2,            "sse4.2" },
