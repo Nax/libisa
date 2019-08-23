@@ -24,11 +24,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stddef.h>
 #include <libisa/libisa.h>
 
 static int ISA_CheckFeatureHelper(ISA_Feature feature, const uint8_t* arr)
 {
-    if (feature >= FEATURES_SIZE * 8)
+    if ((size_t)feature >= FEATURES_SIZE * 8)
         return 0;
     return !!(arr[feature / 8] & (1 << (feature % 8)));
 }
